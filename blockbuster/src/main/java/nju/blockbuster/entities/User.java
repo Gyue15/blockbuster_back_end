@@ -3,7 +3,6 @@ package nju.blockbuster.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.File;
 
 @Entity
 @Table(name = "user")
@@ -16,7 +15,7 @@ public class User {
 
     private String password;
 
-    private File avatar;
+    private String avatar;
 
     public String getUsername() {
         return username;
@@ -30,7 +29,7 @@ public class User {
         return password;
     }
 
-    public File getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
@@ -46,13 +45,14 @@ public class User {
         this.password = password;
     }
 
-    public void setAvatar(File avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return this == obj || this.email.equals(((User) obj).email);
+
+        return obj != null && obj.getClass() == this.getClass() && this.email.equals(((User) obj).email);
     }
 
     @Override
@@ -64,6 +64,7 @@ public class User {
                 + ", password = "
                 + password
                 + ", avatar = "
-                + (avatar == null ? "null" : "not null");
+                + avatar
+                + "]";
     }
 }

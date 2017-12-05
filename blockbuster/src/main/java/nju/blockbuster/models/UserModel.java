@@ -1,7 +1,5 @@
 package nju.blockbuster.models;
 
-import java.io.File;
-
 public class UserModel {
     private String username;
 
@@ -9,7 +7,7 @@ public class UserModel {
 
     private String password;
 
-    private File avatar;
+    private String avatar;
 
     public String getUsername() {
         return username;
@@ -23,7 +21,7 @@ public class UserModel {
         return password;
     }
 
-    public File getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
@@ -39,7 +37,7 @@ public class UserModel {
         this.password = password;
     }
 
-    public void setAvatar(File avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
