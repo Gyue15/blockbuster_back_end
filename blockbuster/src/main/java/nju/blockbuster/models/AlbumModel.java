@@ -2,13 +2,13 @@ package nju.blockbuster.models;
 
 public class AlbumModel {
 
-    private Integer aid;
+    private String aid;
 
     private String title;
 
     private String email;
 
-    public Integer getAid() {
+    public String getAid() {
         return aid;
     }
 
@@ -20,7 +20,7 @@ public class AlbumModel {
         return email;
     }
 
-    public void setAid(Integer aid) {
+    public void setAid(String aid) {
         this.aid = aid;
     }
 

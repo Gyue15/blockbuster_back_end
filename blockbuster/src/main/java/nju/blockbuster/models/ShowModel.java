@@ -6,7 +6,7 @@ public class ShowModel {
 
     private Integer sid;
 
-    private Integer aid;
+    private String aid;
 
     private String description;
 
@@ -50,7 +50,7 @@ public class ShowModel {
         return tags;
     }
 
-    public Integer getAid() {
+    public String getAid() {
         return aid;
     }
 
@@ -90,7 +90,7 @@ public class ShowModel {
         this.tags = tags;
     }
 
-    public void setAid(Integer aid) {
+    public void setAid(String aid) {
         this.aid = aid;
     }
 

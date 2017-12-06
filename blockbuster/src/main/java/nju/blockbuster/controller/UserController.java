@@ -3,6 +3,7 @@ package nju.blockbuster.controller;
 import com.alibaba.fastjson.JSON;
 import nju.blockbuster.config.ConfigClass;
 import nju.blockbuster.models.UserModel;
+import nju.blockbuster.service.AlbumService;
 import nju.blockbuster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AlbumController albumController;
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public String signUp(String username, String email, String password) {
@@ -35,12 +39,15 @@ public class UserController {
         userModel.setPassword(password);
         userModel.setUsername(username);
         ResultMessage res = userService.addUser(userModel);
+        albumController.createNewAlbum(email, "默认专辑");
+        System.out.println("signUpResult:"+JSON.toJSONString(res));
         return JSON.toJSONString(res);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public String logIn(String email, String password) {
+        System.out.println("login:"+email+"  "+password);
         UserModel userModel = userService.getUser(email, password);
         if (userModel == null || userModel.getEmail() == null || userModel.getEmail().length() == 0) {
             return JSON.toJSONString(ResultMessage.FAILURE);

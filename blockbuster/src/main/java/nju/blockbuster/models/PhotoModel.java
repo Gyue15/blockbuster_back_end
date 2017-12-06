@@ -8,7 +8,7 @@ public class PhotoModel {
 
     private Integer sid;
 
-    private Integer aid;
+    private String aid;
 
 //    @ManyToOne
 //    private Show show;
@@ -25,7 +25,7 @@ public class PhotoModel {
         return sid;
     }
 
-    public Integer getAid() {
+    public String getAid() {
         return aid;
     }
 
@@ -41,7 +41,7 @@ public class PhotoModel {
         this.sid = sid;
     }
 
-    public void setAid(Integer aid) {
+    public void setAid(String aid) {
         this.aid = aid;
     }
 

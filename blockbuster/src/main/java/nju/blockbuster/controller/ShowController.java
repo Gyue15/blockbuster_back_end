@@ -31,7 +31,7 @@ public class ShowController {
 
     @PostMapping("/post")
     @ResponseBody
-    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, Integer albumId, String email) {
+    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, String albumId, String email) {
 
         Date date = new Date();
         List<String> fileNames = new ArrayList<>();
@@ -67,6 +67,7 @@ public class ShowController {
         showModel.setEmail(email);
         showModel.setLikeNum(0);
         showModel.setDate(new java.sql.Date(date.getTime()));
+        showModel.setAid(albumId);
         Integer sid = showService.saveShow(showModel);
         if (sid < 0) {
             return JSON.toJSONString(ResultMessage.FAILURE);

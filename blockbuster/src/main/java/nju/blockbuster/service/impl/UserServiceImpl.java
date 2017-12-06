@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userModel.getUsername());
         user = userRepository.saveAndFlush(user);
         System.out.println("!!!!!!!!!!!!in save: " + user.toString());
-        return null;
+        return ResultMessage.SUCCESS;
     }
 
     @Override

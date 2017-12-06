@@ -35,11 +35,20 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Integer saveAlbum(AlbumModel albumModel) {
+    public Boolean saveAlbum(AlbumModel albumModel) {
         Album album = new Album();
         album.setAid(albumModel.getAid());
         album.setEmail(albumModel.getEmail());
         album.setTitle(albumModel.getTitle());
-        return albumRepository.save(album).getAid();
+        Album test = albumRepository.findByAid(album.getAid());
+        if (test != null && test.getAid() != null) {
+            return false;
+        }
+        album = albumRepository.saveAndFlush(album);
+
+        if (album == null || album.getAid() == null) {
+            return false;
+        }
+        return true;
     }
 }

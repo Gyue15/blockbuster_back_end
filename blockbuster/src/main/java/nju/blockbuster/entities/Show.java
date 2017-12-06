@@ -19,7 +19,7 @@ public class Show {
 
     private Integer likeNum;
 
-    private Integer aid;
+    private String aid;
 
     private String email;
 
@@ -42,7 +42,7 @@ public class Show {
         return likeNum;
     }
 
-    public Integer getAid() {
+    public String getAid() {
         return this.aid;
     }
 
@@ -66,7 +66,7 @@ public class Show {
         this.likeNum = likeNum;
     }
 
-    public void setAid(Integer aid) {
+    public void setAid(String aid) {
         this.aid = aid;
     }
 

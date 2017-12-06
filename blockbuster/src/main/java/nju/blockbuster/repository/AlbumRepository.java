@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Integer> {
     List<Album> findAlbumsByEmail(String email);
+    Album findByAid(String aid);
 }

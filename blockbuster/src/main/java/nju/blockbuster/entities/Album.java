@@ -7,14 +7,13 @@ import javax.persistence.*;
 public class Album {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer aid;
+    private String aid;
 
     private String title;
 
     private String email;
 
-    public Integer getAid() {
+    public String getAid() {
         return aid;
     }
 
@@ -26,7 +25,7 @@ public class Album {
         return email;
     }
 
-    public void setAid(Integer aid) {
+    public void setAid(String aid) {
         this.aid = aid;
     }
 
