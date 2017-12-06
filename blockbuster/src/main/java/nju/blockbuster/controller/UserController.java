@@ -34,7 +34,7 @@ public class UserController {
         }
 
         userModel = new UserModel();
-        userModel.setAvatar(ConfigClass.AVATAR_PATH);
+        userModel.setAvatar(ConfigClass.AVATAR_PATH + ConfigClass.AVATAR_NAME);
         userModel.setEmail(email);
         userModel.setPassword(password);
         userModel.setUsername(username);

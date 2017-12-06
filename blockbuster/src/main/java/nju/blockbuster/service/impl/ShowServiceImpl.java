@@ -5,6 +5,7 @@ import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
 import nju.blockbuster.repository.*;
 import nju.blockbuster.service.ShowService;
+import nju.blockbuster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import util.ResultMessage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,12 @@ public class ShowServiceImpl implements ShowService{
 
     @Autowired
     FollowRepository followRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public ShowModel getShow(Integer sid) {
@@ -160,6 +169,7 @@ public class ShowServiceImpl implements ShowService{
     }
 
     private ShowModel[] toShowModels(String email, List<Show> showList) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         ShowModel[] showModels = new ShowModel[showList.size()];
         for (int i = 0; i < showModels.length; i++) {
             ShowModel showModel = new ShowModel();
@@ -170,6 +180,7 @@ public class ShowServiceImpl implements ShowService{
             showModel.setDescription(show.getDescription());
             showModel.setSid(show.getSid());
             showModel.setAid(show.getAid());
+            showModel.setTitle(show.getTitle());
 
             // tags
             List<TagRelation> tagList = tagRelationRepository.findByTagRelationPK_Sid(show.getSid());
@@ -197,6 +208,17 @@ public class ShowServiceImpl implements ShowService{
                 pictures[j] = photoList.get(j).getPic();
             }
             showModel.setPictures(pictures);
+
+            // is followed
+            showModel.setFollowed(userService.isFollow(email, show.getEmail()));
+
+            // user
+            User user = userRepository.findUserByEmail(show.getEmail());
+            showModel.setAvatar(user.getAvatar());
+            showModel.setUserName(user.getUsername());
+
+            // date
+            showModel.setFormatDate(df.format(show.getDate()));
 
             showModels[i] = showModel;
         }

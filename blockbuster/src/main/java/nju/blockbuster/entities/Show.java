@@ -23,8 +23,15 @@ public class Show {
 
     private String email;
 
-//    @OneToMany
-//    private List<Photo> photos;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Integer getSid() {
         return sid;

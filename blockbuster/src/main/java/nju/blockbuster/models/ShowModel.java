@@ -6,6 +6,8 @@ public class ShowModel {
 
     private Integer sid;
 
+    private String title;
+
     private String aid;
 
     private String description;
@@ -21,6 +23,72 @@ public class ShowModel {
     private String[] tags;
 
     private String[] pictures;
+
+    private String userName;
+
+    private String avatar;
+
+    private Boolean isFollowed;
+
+    private String formatDate;
+
+    private String albumName;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setLiked(Boolean liked) {
+        isLiked = liked;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setFollowed(Boolean followed) {
+        isFollowed = followed;
+    }
+
+    public void setFormatDate(String formatDate) {
+        this.formatDate = formatDate;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Boolean getLiked() {
+        return isLiked;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public Boolean getFollowed() {
+        return isFollowed;
+    }
+
+    public String getFormatDate() {
+        return formatDate;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
 
     public Integer getSid() {
         return sid;

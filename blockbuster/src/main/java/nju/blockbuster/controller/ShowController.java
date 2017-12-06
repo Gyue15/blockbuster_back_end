@@ -62,7 +62,11 @@ public class ShowController {
         Date date = new Date();
         List<String> fileUrls = new ArrayList<>();
         for (Map.Entry<String, String> entry : filePathMap.entrySet()) {
-            fileUrls.add(entry.getValue());
+            for (String fileName: fileNames) {
+                if (fileName.equals(entry.getKey())) {
+                    fileUrls.add(entry.getValue());
+                }
+            }
         }
 
         // 存show表
@@ -73,6 +77,7 @@ public class ShowController {
         showModel.setLikeNum(0);
         showModel.setDate(date);
         showModel.setAid(albumId);
+        showModel.setTitle(title);
         Integer sid = showService.saveShow(showModel);
         System.out.println("1111111111111111Show Controller: " + sid);
         if (sid < 0) {
