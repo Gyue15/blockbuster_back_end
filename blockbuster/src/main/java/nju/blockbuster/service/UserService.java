@@ -15,4 +15,6 @@ public interface UserService {
     List<UserModel> getFollowedUser(String email);
 
     ResultMessage follow(String followerEmail, String followedEmail);
+
+    Boolean isFollow(String followerEmail, String followedEmail);
 }

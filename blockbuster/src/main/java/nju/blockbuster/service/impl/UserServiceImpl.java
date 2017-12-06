@@ -84,6 +84,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultMessage follow(String followerEmail, String followedEmail) {
+        if (isFollow(followerEmail, followedEmail)) {
+            return ResultMessage.FAILURE;
+        }
         FollowPK followPK = new FollowPK();
         followPK.setFollowedEmail(followedEmail);
         followPK.setFollowerEmail(followerEmail);
@@ -92,6 +95,16 @@ public class UserServiceImpl implements UserService {
         followRepository.save(follow);
 
         return ResultMessage.SUCCESS;
+    }
+
+    @Override
+    public Boolean isFollow(String followerEmail, String followedEmail) {
+        FollowPK followPK = new FollowPK();
+        followPK.setFollowedEmail(followedEmail);
+        followPK.setFollowerEmail(followerEmail);
+        Follow follow = followRepository.findByFollowPK(followPK);
+
+        return follow != null && follow.getFollowPK() != null && follow.getFollowPK().getFollowedEmail() != null;
     }
 
 }

@@ -58,14 +58,19 @@ public class UserController {
     @RequestMapping("/follow")
     @ResponseBody
     public String follow(String followerEmail, String followedEmail) {
-
-        return null;
+        return JSON.toJSONString(userService.follow(followerEmail, followedEmail));
     }
 
     @RequestMapping("/getfollowed")
     @ResponseBody
     public String getFollowed(String email) {
-        return null;
+        return JSON.toJSONString(userService.getFollowedUser(email));
+    }
+
+    @RequestMapping("/isFollowed")
+    @ResponseBody
+    public Boolean isFollow(String followerEmail, String followedEmail) {
+        return userService.isFollow(followerEmail, followedEmail);
     }
 
 
