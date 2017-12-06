@@ -55,7 +55,7 @@ public class UserController {
         if (userModel == null || userModel.getEmail() == null || userModel.getEmail().length() == 0) {
             return JSON.toJSONString(ResultMessage.FAILURE);
         }
-        return JSON.toJSONString(userModel);
+        return JSON.toJSONString(ResultMessage.SUCCESS);
     }
 
     @PostMapping("/follow")
