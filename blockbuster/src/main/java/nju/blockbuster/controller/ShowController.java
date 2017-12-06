@@ -1,7 +1,6 @@
 package nju.blockbuster.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.xml.internal.bind.v2.util.QNameMap;
 import nju.blockbuster.config.ConfigClass;
 import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
@@ -51,18 +50,18 @@ public class ShowController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            System.out.println(file);
-            return "SUCCESS";
         }
+        System.out.println(file);
+        return "SUCCESS";
+
     }
 
     @PostMapping("/post")
     @ResponseBody
-    public String postPhoto(String[] fileNames,String title, String description, String[] tags, String albumId, String email){
+    public String postPhoto(String[] fileNames, String title, String description, String[] tags, String albumId, String email) {
         Date date = new Date();
         List<String> fileUrls = new ArrayList<>();
-        for (Map.Entry<String, String> entry: filePathMap.entrySet()) {
+        for (Map.Entry<String, String> entry : filePathMap.entrySet()) {
             fileUrls.add(entry.getValue());
         }
 
@@ -84,7 +83,7 @@ public class ShowController {
         System.out.println("222filename size:" + fileUrls.size());
         for (int i = 0; i < fileUrls.size(); i++) {
             PhotoModel photoModel = new PhotoModel();
-            photoModel.setPic(fileNames.get(i));
+            photoModel.setPic(fileUrls.get(i));
             photoModel.setAid(albumId);
             photoModel.setSid(sid);
             System.out.println("22222222222222Show Controller2: " + photoModel.getSid());
@@ -95,7 +94,6 @@ public class ShowController {
         }
         return JSON.toJSONString(ResultMessage.SUCCESS);
     }
-
 
 
 //    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, String albumId, String email) {
