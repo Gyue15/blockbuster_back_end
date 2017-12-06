@@ -55,5 +55,18 @@ public class UserController {
         return JSON.toJSONString(userModel);
     }
 
+    @RequestMapping("/follow")
+    @ResponseBody
+    public String follow(String followerEmail, String followedEmail) {
+
+        return null;
+    }
+
+    @RequestMapping("/getfollowed")
+    @ResponseBody
+    public String getFollowed(String email) {
+        return null;
+    }
+
 
 }

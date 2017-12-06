@@ -20,6 +20,8 @@ public class ShowModel {
 
     private String[] tags;
 
+    private String[] pictures;
+
     public Integer getSid() {
         return sid;
     }
@@ -40,7 +42,7 @@ public class ShowModel {
         return email;
     }
 
-    public Boolean getIsLiked() {
+    public Boolean getLiked() {
         return isLiked;
     }
 
@@ -50,6 +52,14 @@ public class ShowModel {
 
     public Integer getAid() {
         return aid;
+    }
+
+    public String[] getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String[] pictures) {
+        this.pictures = pictures;
     }
 
     public void setSid(Integer sid) {

@@ -172,7 +172,7 @@ public class ShowServiceImpl implements ShowService{
             List<TagRelation> tagList = tagRelationRepository.findByTagRelationPK_Sid(show.getSid());
             String[] tags = new String[tagList.size()];
             for (int j = 0; j < tags.length; j++) {
-                tags[i] = tagList.get(i).getTagRelationPK().getTag();
+                tags[j] = tagList.get(j).getTagRelationPK().getTag();
             }
             showModel.setTags(tags);
 
@@ -186,6 +186,14 @@ public class ShowServiceImpl implements ShowService{
             } else {
                 showModel.setLiked(false);
             }
+
+            // pictures
+            List<Photo> photoList = photoRepository.findBySid(show.getSid());
+            String[] pictures = new String[photoList.size()];
+            for (int j = 0; j < pictures.length; j++) {
+                pictures[j] = photoList.get(j).getPic();
+            }
+            showModel.setPictures(pictures);
 
             showModels[i] = showModel;
         }

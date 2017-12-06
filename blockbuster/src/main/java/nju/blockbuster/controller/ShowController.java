@@ -3,6 +3,7 @@ package nju.blockbuster.controller;
 import com.alibaba.fastjson.JSON;
 import com.sun.org.apache.regexp.internal.RE;
 import netscape.javascript.JSObject;
+import nju.blockbuster.config.ConfigClass;
 import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
 import nju.blockbuster.service.ShowService;
@@ -40,9 +41,18 @@ public class ShowController {
             if (!file.isEmpty()) {
                 try {
                     // 文件保存路径
-                    String filePath = PARENT_PATH + "/" + email + "/" + date.toString() + "/" + file.getOriginalFilename();
-                    file.transferTo(new File(filePath));
-                    fileNames.add(filePath);
+                    String filePath = ConfigClass.PATH + System.currentTimeMillis() + file.getOriginalFilename();
+                    // 文件url
+                    String fileUrl = ConfigClass.URL + System.currentTimeMillis() + file.getOriginalFilename();
+                    File dest = new File(filePath);
+
+                    // 检测是否存在目录
+                    if (!dest.getParentFile().exists()) {
+                        dest.getParentFile().mkdirs();
+                    }
+
+                    file.transferTo(dest);
+                    fileNames.add(fileUrl);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
