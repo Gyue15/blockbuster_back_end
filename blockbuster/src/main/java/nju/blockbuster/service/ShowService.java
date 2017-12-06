@@ -5,7 +5,6 @@ import nju.blockbuster.models.ShowModel;
 import util.ResultMessage;
 
 public interface ShowService {
-    ShowModel getShow(Integer sid);
 
     Integer saveShow(ShowModel showModel);
 

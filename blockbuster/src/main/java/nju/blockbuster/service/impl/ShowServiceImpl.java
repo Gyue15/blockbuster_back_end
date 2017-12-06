@@ -46,22 +46,8 @@ public class ShowServiceImpl implements ShowService{
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    public ShowModel getShow(Integer sid) {
-        Show show = showRepository.findShowBySid(sid);
-        ShowModel showModel = new ShowModel();
-        if (show == null || show.getSid() == null || show.getSid() <= 0) {
-            return showModel;
-        }
-        showModel.setLikeNum(show.getLikeNum());
-        showModel.setDate(show.getDate());
-        showModel.setEmail(show.getEmail());
-        showModel.setDescription(show.getDescription());
-        showModel.setSid(show.getSid());
-        showModel.setAid(show.getAid());
-
-        return showModel;
-    }
+    @Autowired
+    AlbumRepository albumRepository;
 
     @Override
     public Integer saveShow(ShowModel showModel) {
@@ -72,6 +58,7 @@ public class ShowServiceImpl implements ShowService{
         show.setEmail(showModel.getEmail());
         show.setLikeNum(showModel.getLikeNum());
         show.setSid(showModel.getSid());
+        show.setTitle(showModel.getTitle());
         return showRepository.save(show).getSid();
     }
 
@@ -219,6 +206,9 @@ public class ShowServiceImpl implements ShowService{
 
             // date
             showModel.setFormatDate(df.format(show.getDate()));
+
+            // album name
+            showModel.setAlbumName(albumRepository.findByAid(show.getAid()).getTitle());
 
             showModels[i] = showModel;
         }

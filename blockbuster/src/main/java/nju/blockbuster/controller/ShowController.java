@@ -125,14 +125,7 @@ public class ShowController {
     @PostMapping("/like")
     @ResponseBody
     public String likeShow(String email, Integer showID) {
-        // 保存show
-        ShowModel showModel = showService.getShow(showID);
-        showModel.setLikeNum(showModel.getLikeNum() + 1);
-        showService.saveShow(showModel);
-
-        // 保存like
-        showService.saveLike(showID, email);
-        return null;
+        return JSON.toJSONString(showService.saveLike(showID, email));
     }
 
     @PostMapping("/search")
