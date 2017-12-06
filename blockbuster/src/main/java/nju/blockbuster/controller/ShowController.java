@@ -1,14 +1,13 @@
 package nju.blockbuster.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.regexp.internal.RE;
-import netscape.javascript.JSObject;
 import nju.blockbuster.config.ConfigClass;
 import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
 import nju.blockbuster.service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/show")
+@RequestMapping(value = "/show", produces = "application/json;charset=UTF-8")
 @Controller
 public class ShowController {
 
@@ -30,14 +29,14 @@ public class ShowController {
     @Autowired
     private ShowService showService;
 
-    @RequestMapping("/post")
+    @PostMapping("/post")
     @ResponseBody
-    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, Integer albumId, String email){
+    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, Integer albumId, String email) {
 
-        Date date= new Date();
+        Date date = new Date();
         List<String> fileNames = new ArrayList<>();
         // 存储文件
-        for (MultipartFile file: files) {
+        for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 try {
                     // 文件保存路径
@@ -87,27 +86,27 @@ public class ShowController {
         return JSON.toJSONString(ResultMessage.SUCCESS);
     }
 
-    @RequestMapping("/tags")
+    @PostMapping("/tags")
     @ResponseBody
     public String getHotTags() {
         return JSON.toJSONString(showService.getHotTags());
     }
 
-    @RequestMapping("/hot")
+    @PostMapping("/hot")
     @ResponseBody
     public String getHotShow(String email, int pageNum) {
         return JSON.toJSONString(showService.getHotShows(email, pageNum));
     }
 
-    @RequestMapping("/care")
+    @PostMapping("/care")
     @ResponseBody
     public String getCareShows(String email) {
         return JSON.toJSONString(showService.getCareShows(email));
     }
 
-    @RequestMapping("/like")
+    @PostMapping("/like")
     @ResponseBody
-    public String likeShow(String email,Integer showID) {
+    public String likeShow(String email, Integer showID) {
         // 保存show
         ShowModel showModel = showService.getShow(showID);
         showModel.setLikeNum(showModel.getLikeNum() + 1);
@@ -118,7 +117,7 @@ public class ShowController {
         return null;
     }
 
-    @RequestMapping("/search")
+    @PostMapping("/search")
     @ResponseBody
     public String searchShow(String tag, String email) {
         return JSON.toJSONString(showService.searchShows(tag, email));

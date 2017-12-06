@@ -5,19 +5,21 @@ import nju.blockbuster.models.UserModel;
 import nju.blockbuster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import util.ResultMessage;
 
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/user", produces = "application/json;charset=UTF-8")
 public class UserController {
     private static final String AVATAR = "~/web_project/avatar/avatar.jpg";
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/signup")
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public String signUp(String username, String email, String password) {
         //检查是否重复
@@ -35,7 +37,7 @@ public class UserController {
         return JSON.toJSONString(res);
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public String logIn(String email, String password) {
         UserModel userModel = userService.getUser(email, password);
@@ -45,7 +47,7 @@ public class UserController {
         return JSON.toJSONString(userModel);
     }
 
-    @RequestMapping("/signout")
+    @RequestMapping(value = "/signout", method = RequestMethod.POST)
     @ResponseBody
     public String signOut(String email) {
         UserModel userModel = userService.findUser(email);
@@ -55,19 +57,19 @@ public class UserController {
         return JSON.toJSONString(userModel);
     }
 
-    @RequestMapping("/follow")
+    @PostMapping("/follow")
     @ResponseBody
     public String follow(String followerEmail, String followedEmail) {
         return JSON.toJSONString(userService.follow(followerEmail, followedEmail));
     }
 
-    @RequestMapping("/getfollowed")
+    @PostMapping("/getfollowed")
     @ResponseBody
     public String getFollowed(String email) {
         return JSON.toJSONString(userService.getFollowedUser(email));
     }
 
-    @RequestMapping("/isFollowed")
+    @PostMapping("/isFollowed")
     @ResponseBody
     public Boolean isFollow(String followerEmail, String followedEmail) {
         return userService.isFollow(followerEmail, followedEmail);
