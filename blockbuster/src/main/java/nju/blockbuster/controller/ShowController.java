@@ -30,63 +30,85 @@ public class ShowController {
     @Autowired
     private ShowService showService;
 
+    @PostMapping("/upload")
+    @ResponseBody
+    public String upload(MultipartFile file){
+        System.out.println(file);
+        return ("SUCCESS");
+    }
+
     @PostMapping("/post")
     @ResponseBody
-    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, String albumId, String email) {
-
-        Date date = new Date();
-        List<String> fileNames = new ArrayList<>();
-        // 存储文件
-        for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                try {
-                    // 文件保存路径
-                    String filePath = ConfigClass.PATH + System.currentTimeMillis() + file.getOriginalFilename();
-                    // 文件url
-                    String fileUrl = ConfigClass.URL + System.currentTimeMillis() + file.getOriginalFilename();
-                    File dest = new File(filePath);
-
-                    // 检测是否存在目录
-                    if (!dest.getParentFile().exists()) {
-                        dest.getParentFile().mkdirs();
-                    }
-
-                    file.transferTo(dest);
-                    fileNames.add(fileUrl);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                fileNames.add(BROKEN_PATH);
-            }
-        }
-
-        // 存show表
-        ShowModel showModel = new ShowModel();
-        showModel.setTags(tags);
-        showModel.setDescription(description);
-        showModel.setEmail(email);
-        showModel.setLikeNum(0);
-        showModel.setDate(new java.sql.Date(date.getTime()));
-        showModel.setAid(albumId);
-        Integer sid = showService.saveShow(showModel);
-        if (sid < 0) {
-            return JSON.toJSONString(ResultMessage.FAILURE);
-        }
-
-        // 存Photo表
-        for (int i = 0; i < fileNames.size(); i++) {
-            PhotoModel photoModel = new PhotoModel();
-            photoModel.setPic(fileNames.get(i));
-            photoModel.setAid(albumId);
-            photoModel.setSid(sid);
-            Integer pid = showService.addPhoto(photoModel);
-            if (pid < 0) {
-                return JSON.toJSONString(ResultMessage.FAILURE);
-            }
-        }
-        return JSON.toJSONString(ResultMessage.SUCCESS);
+    public String postPhoto(String[] fileNames,String title, String description, String[] tags, String albumId, String email){
+        return ("SUCCESS");
     }
+
+
+
+//    public String postPhoto(MultipartFile[] files, String title, String description, String[] tags, String albumId, String email) {
+//        System.out.println(files.length);
+//        System.out.println(tags);
+//
+//        //System.out.println(albumId == null);
+//        Date date = new Date();
+//        List<String> fileNames = new ArrayList<>();
+//        // 存储文件
+//        for (MultipartFile file : files) {
+//            System.out.println(file.isEmpty());
+//            if (!file.isEmpty()) {
+//                try {
+//                    // 文件保存路径
+//                    String filePath = ConfigClass.PATH + System.currentTimeMillis() + file.getOriginalFilename();
+//                    // 文件url
+//                    String fileUrl = ConfigClass.URL + System.currentTimeMillis() + file.getOriginalFilename();
+//                    File dest = new File(filePath);
+//
+//                    // 检测是否存在目录
+//                    if (!dest.getParentFile().exists()) {
+//                        dest.getParentFile().mkdirs();
+//                    }
+//
+//                    file.transferTo(dest);
+//                    fileNames.add(fileUrl);
+//                    System.out.println("000filename size:" + fileNames.size());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                fileNames.add(BROKEN_PATH);
+//                System.out.println("111filename size:" + fileNames.size());
+//            }
+//        }
+//
+//        // 存show表
+//        ShowModel showModel = new ShowModel();
+//        showModel.setTags(tags);
+//        showModel.setDescription(description);
+//        showModel.setEmail(email);
+//        showModel.setLikeNum(0);
+//        showModel.setDate(new java.sql.Date(date.getTime()));
+//        showModel.setAid(albumId);
+//        Integer sid = showService.saveShow(showModel);
+//        System.out.println("1111111111111111Show Controller: " + sid);
+//        if (sid < 0) {
+//            return JSON.toJSONString(ResultMessage.FAILURE);
+//        }
+//
+//        // 存Photo表
+//        System.out.println("222filename size:" + fileNames.size());
+//        for (int i = 0; i < fileNames.size(); i++) {
+//            PhotoModel photoModel = new PhotoModel();
+//            photoModel.setPic(fileNames.get(i));
+//            photoModel.setAid(albumId);
+//            photoModel.setSid(sid);
+//            System.out.println("22222222222222Show Controller2: " + photoModel.getSid());
+//            Integer pid = showService.addPhoto(photoModel);
+//            if (pid < 0) {
+//                return JSON.toJSONString(ResultMessage.FAILURE);
+//            }
+//        }
+//        return JSON.toJSONString(ResultMessage.SUCCESS);
+//    }
 
     @GetMapping("/tags")
     @ResponseBody

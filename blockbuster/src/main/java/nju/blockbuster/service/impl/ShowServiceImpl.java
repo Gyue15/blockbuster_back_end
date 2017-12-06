@@ -74,7 +74,10 @@ public class ShowServiceImpl implements ShowService{
         photo.setAid(photoModel.getAid());
         System.out.println(photoModel.toString());
         System.out.println(photo.toString());
-        return photoRepository.save(photo).getPid();
+        System.out.println("!!!!!!!!!!!!!!!!!!!+++++++++++++++show service1: " + photo.getSid());
+        photo = photoRepository.save(photo);
+        System.out.println("++++++++========================show service2: " + photo.getSid());
+        return photo.getPid();
     }
 
     @Override
