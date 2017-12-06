@@ -42,7 +42,7 @@ public class ShowModel {
         return email;
     }
 
-    public Boolean getLiked() {
+    public Boolean getIsLiked() {
         return isLiked;
     }
 
