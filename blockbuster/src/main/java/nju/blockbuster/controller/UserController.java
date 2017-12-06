@@ -1,6 +1,7 @@
 package nju.blockbuster.controller;
 
 import com.alibaba.fastjson.JSON;
+import nju.blockbuster.config.ConfigClass;
 import nju.blockbuster.models.UserModel;
 import nju.blockbuster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import util.ResultMessage;
 
 @Controller
 @RequestMapping(value = "/user", produces = "application/json;charset=UTF-8")
 public class UserController {
-    private static final String AVATAR = "~/web_project/avatar/avatar.jpg";
 
     @Autowired
     private UserService userService;
@@ -29,7 +30,7 @@ public class UserController {
         }
 
         userModel = new UserModel();
-        userModel.setAvatar(AVATAR);
+        userModel.setAvatar(ConfigClass.AVATAR_PATH);
         userModel.setEmail(email);
         userModel.setPassword(password);
         userModel.setUsername(username);
