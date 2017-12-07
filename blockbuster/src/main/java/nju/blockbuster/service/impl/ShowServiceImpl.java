@@ -59,6 +59,7 @@ public class ShowServiceImpl implements ShowService{
         show.setLikeNum(showModel.getLikeNum());
         show.setSid(showModel.getSid());
         show.setTitle(showModel.getTitle());
+        show = showRepository.save(show);
         for (int i = 0; i < showModel.getTags().length; i++) {
             String tag = showModel.getTags()[i];
             Tags tags = tagsRepository.findByTag(tag);
@@ -71,13 +72,13 @@ public class ShowServiceImpl implements ShowService{
             tagsRepository.saveAndFlush(tags);
             TagRelation tagRelation = new TagRelation();
             TagRelationPK tagRelationPK = new TagRelationPK();
-            tagRelationPK.setSid(showModel.getSid());
+            tagRelationPK.setSid(show.getSid());
             tagRelationPK.setTag(tag);
             tagRelation.setTagRelationPK(tagRelationPK);
             tagRelationRepository.saveAndFlush(tagRelation);
         }
 
-        return showRepository.save(show).getSid();
+        return show.getSid();
     }
 
     @Override
