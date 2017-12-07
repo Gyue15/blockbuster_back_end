@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface TagsRepository extends JpaRepository<Tags, String>{
 
     Page<Tags> findByUsedTimeGreaterThanEqual(Integer base, Pageable pageable);
+
+    Tags findByTag(String tag);
 }

@@ -59,6 +59,24 @@ public class ShowServiceImpl implements ShowService{
         show.setLikeNum(showModel.getLikeNum());
         show.setSid(showModel.getSid());
         show.setTitle(showModel.getTitle());
+        for (int i = 0; i < showModel.getTags().length; i++) {
+            String tag = showModel.getTags()[i];
+            Tags tags = tagsRepository.findByTag(tag);
+            if (tags == null) {
+                tags = new Tags();
+                tags.setUsedTime(0);
+            }
+            tags.setTag(tag);
+            tags.setUsedTime(tags.getUsedTime() + 1);
+            tagsRepository.saveAndFlush(tags);
+            TagRelation tagRelation = new TagRelation();
+            TagRelationPK tagRelationPK = new TagRelationPK();
+            tagRelationPK.setSid(showModel.getSid());
+            tagRelationPK.setTag(tag);
+            tagRelation.setTagRelationPK(tagRelationPK);
+            tagRelationRepository.saveAndFlush(tagRelation);
+        }
+
         return showRepository.save(show).getSid();
     }
 
