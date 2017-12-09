@@ -2,8 +2,10 @@ package nju.blockbuster.controller;
 
 import com.alibaba.fastjson.JSON;
 import nju.blockbuster.config.ConfigClass;
+import nju.blockbuster.models.AlbumModel;
 import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
+import nju.blockbuster.service.AlbumService;
 import nju.blockbuster.service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class ShowController {
 
     @Autowired
     private ShowService showService;
+
+    @Autowired
+    private AlbumService albumService;
 
     @PostMapping("/upload")
     @ResponseBody
@@ -58,7 +63,7 @@ public class ShowController {
 
     @PostMapping("/post")
     @ResponseBody
-    public String postPhoto(String[] fileNames, String title, String description, String[] tags, String albumId, String email) {
+    public String postPhoto(String[] fileNames, String title, String description, String[] tags, String albumTitle, String email) {
         Date date = new Date();
         List<String> fileUrls = new ArrayList<>();
         for (Map.Entry<String, String> entry : filePathMap.entrySet()) {
@@ -67,6 +72,16 @@ public class ShowController {
                     fileUrls.add(entry.getValue());
                 }
             }
+        }
+
+        String albumId = albumTitle + email;
+        // 查看是否有album，如果没有就创建
+        AlbumModel albumModel = albumService.albumDetail(albumId);
+        if (albumId == null || albumModel.getAid() == null) {
+            albumModel.setEmail(email);
+            albumModel.setTitle(albumTitle);
+            albumModel.setAid(albumId);
+            albumService.saveAlbum(albumModel);
         }
 
         // 存show表
