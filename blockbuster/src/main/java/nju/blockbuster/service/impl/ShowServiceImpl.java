@@ -175,14 +175,26 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public ShowModel[] searchShows(String tag, String email) {
-        List<TagRelation> tagRelationList = tagRelationRepository.findByTagRelationPK_Tag(tag);
+    public ShowModel[] searchShows(String key, String email) {
+        key = "%" + key + "%";
+        List<TagRelation> tagRelationList = tagRelationRepository.findByTagRelationPK_TagLike(key);
 
         List<Show> showList = new ArrayList<>();
         // 获得所有的show
         for (TagRelation tagRelation : tagRelationList) {
-            showList.add(showRepository.findShowBySid(tagRelation.getTagRelationPK().getSid()));
+            Show show = showRepository.findShowBySid(tagRelation.getTagRelationPK().getSid());
+            if (!showList.contains(show)) {
+                showList.add(show);
+            }
         }
+
+        List<Show> addShows = showRepository.findByTitleLikeOrDescriptionLike(key, key);
+        for (Show show: addShows) {
+            if (!showList.contains(show)) {
+                showList.add(show);
+            }
+        }
+
         // 按时间排序
         sort(showList);
 

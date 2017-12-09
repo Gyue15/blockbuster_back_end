@@ -142,7 +142,7 @@ public class ShowController {
 
     @PostMapping("/search")
     @ResponseBody
-    public String searchShow(String tag, String email) {
-        return JSON.toJSONString(showService.searchShows(tag, email));
+    public String searchShow(String key, String email) {
+        return JSON.toJSONString(showService.searchShows(key, email));
     }
 }

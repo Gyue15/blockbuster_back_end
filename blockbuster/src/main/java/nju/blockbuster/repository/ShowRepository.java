@@ -15,4 +15,6 @@ public interface ShowRepository extends JpaRepository<Show, Integer>{
     Page<Show> findByLikeNumGreaterThanEqual(Integer base, Pageable pageable);
 
     List<Show> findByEmail(String email);
+
+    List<Show> findByTitleLikeOrDescriptionLike(String title, String description);
 }

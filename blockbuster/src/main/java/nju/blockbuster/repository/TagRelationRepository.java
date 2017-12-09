@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TagRelationRepository extends JpaRepository<TagRelation, TagRelationPK>{
     List<TagRelation> findByTagRelationPK_Sid(Integer sid);
-    List<TagRelation> findByTagRelationPK_Tag(String tag);
+    List<TagRelation> findByTagRelationPK_TagLike(String tag);
 }
