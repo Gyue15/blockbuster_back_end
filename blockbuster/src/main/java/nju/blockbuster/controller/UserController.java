@@ -110,7 +110,7 @@ public class UserController {
         if (res != ResultMessage.SUCCESS) {
             return JSON.toJSONString(res);
         }
-        return url;
+        return JSON.toJSONString(url);
     }
 
     @PostMapping("/changePassword")
