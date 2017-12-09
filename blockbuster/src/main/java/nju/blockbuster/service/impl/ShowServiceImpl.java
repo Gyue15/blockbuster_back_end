@@ -175,6 +175,12 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
+    public ShowModel[] getMyShow(String email) {
+        List<Show> showList = showRepository.findByEmail(email);
+        return toShowModels(email, showList);
+    }
+
+    @Override
     public ShowModel[] searchShows(String key, String email) {
         key = "%" + key + "%";
         List<TagRelation> tagRelationList = tagRelationRepository.findByTagRelationPK_TagLike(key);

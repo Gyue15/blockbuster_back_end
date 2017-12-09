@@ -114,6 +114,12 @@ public class ShowController {
         return res;
     }
 
+    @PostMapping("/myShow")
+    @ResponseBody
+    public String getMyShow(String email) {
+        return JSON.toJSONString(showService.getMyShow(email));
+    }
+
     @PostMapping("/care")
     @ResponseBody
     public String getCareShows(String email) {
