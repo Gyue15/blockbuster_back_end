@@ -4,6 +4,8 @@ import nju.blockbuster.models.PhotoModel;
 import nju.blockbuster.models.ShowModel;
 import util.ResultMessage;
 
+import java.util.List;
+
 public interface ShowService {
 
     Integer saveShow(ShowModel showModel);
@@ -21,6 +23,8 @@ public interface ShowService {
     ResultMessage deleteLike(Integer sid, String email);
 
     ShowModel getShow(Integer sid, String email);
+
+    ShowModel[] getMyShow(String email);
 
     ShowModel[] searchShows(String key, String email);
 
