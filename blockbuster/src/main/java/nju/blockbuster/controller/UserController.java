@@ -141,6 +141,18 @@ public class UserController {
         return JSON.toJSONString(userService.unfollow(email, followedEmail));
     }
 
+    @PostMapping("/unfollowList")
+    @ResponseBody
+    public String unfollowList(String email, String[] followedEmailList) {
+        for (String followedEmail: followedEmailList) {
+            ResultMessage res = userService.unfollow(email, followedEmail);
+            if (res != ResultMessage.SUCCESS) {
+                return JSON.toJSONString(res);
+            }
+        }
+        return JSON.toJSONString(ResultMessage.SUCCESS);
+    }
+
     @PostMapping("/getfollowed")
     @ResponseBody
     public String getFollowed(String email) {
