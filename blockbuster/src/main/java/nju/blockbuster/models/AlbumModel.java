@@ -8,6 +8,16 @@ public class AlbumModel {
 
     private String email;
 
+    private String[] photos;
+
+    public String[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String[] photos) {
+        this.photos = photos;
+    }
+
     public String getAid() {
         return aid;
     }
@@ -40,7 +50,7 @@ public class AlbumModel {
     @Override
     public String toString() {
         return "Album [aid = "
-                + aid.toString()
+                + aid
                 + ", title = "
                 + title
                 + ", email = "

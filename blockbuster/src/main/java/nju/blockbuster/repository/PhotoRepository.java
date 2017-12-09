@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Integer> {
-    Photo findPhotoByAid(Integer aid);
 
     List<Photo> findBySid(Integer sid);
+
+    List<Photo> findByAid(String aid);
 }

@@ -62,7 +62,7 @@ public class ShowController {
         Date date = new Date();
         List<String> fileUrls = new ArrayList<>();
         for (Map.Entry<String, String> entry : filePathMap.entrySet()) {
-            for (String fileName: fileNames) {
+            for (String fileName : fileNames) {
                 if (fileName.equals(entry.getKey())) {
                     fileUrls.add(entry.getValue());
                 }
@@ -110,7 +110,7 @@ public class ShowController {
     @PostMapping("/hot")
     @ResponseBody
     public String getHotShow(String email, int pageNum) {
-        System.out.println("getHotShow:"+email);
+        System.out.println("getHotShow:" + email);
         String res = JSON.toJSONString(showService.getHotShows(email, pageNum));
         System.out.println(res);
         return res;
@@ -124,8 +124,20 @@ public class ShowController {
 
     @PostMapping("/like")
     @ResponseBody
-    public String likeShow(String email, Integer showID) {
-        return JSON.toJSONString(showService.saveLike(showID, email));
+    public String likeShow(String email, Integer sid) {
+        return JSON.toJSONString(showService.saveLike(sid, email));
+    }
+
+    @PostMapping("/unlike")
+    @ResponseBody
+    public String unlikeShow(String email, Integer sid) {
+        return JSON.toJSONString(showService.deleteLike(sid, email));
+    }
+
+    @PostMapping("/detail")
+    @ResponseBody
+    public String showDetail(String email, Integer sid) {
+        return JSON.toJSONString(showService.getShow(sid, email));
     }
 
     @PostMapping("/search")

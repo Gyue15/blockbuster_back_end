@@ -50,6 +50,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResultMessage modifyUser(UserModel userModel) {
+        User user = userRepository.findUserByEmail(userModel.getEmail());
+        if (user == null || user.getEmail() == null) {
+            return ResultMessage.FAILURE;
+        }
+
+        if (userModel.getAvatar() != null) {
+            user.setAvatar(userModel.getAvatar());
+        }
+        if (userModel.getUsername() != null) {
+            user.setUsername(userModel.getUsername());
+        }
+        if (userModel.getPassword() != null) {
+            user.setPassword(userModel.getPassword());
+        }
+
+        user = userRepository.saveAndFlush(user);
+        return (user == null || user.getEmail() == null) ? ResultMessage.FAILURE : ResultMessage.SUCCESS;
+    }
+
+    @Override
     public UserModel getUser(String email, String password) {
         User user = userRepository.findByEmailAndPassword(email, password);
         UserModel userModel = new UserModel();
@@ -94,6 +115,20 @@ public class UserServiceImpl implements UserService {
         follow.setFollowPK(followPK);
         followRepository.save(follow);
 
+        return ResultMessage.SUCCESS;
+    }
+
+    @Override
+    public ResultMessage unfollow(String followerEmail, String followedEmail) {
+        if (!isFollow(followerEmail, followedEmail)) {
+            return ResultMessage.FAILURE;
+        }
+        FollowPK followPK = new FollowPK();
+        followPK.setFollowerEmail(followerEmail);
+        followPK.setFollowedEmail(followedEmail);
+        Follow follow = new Follow();
+        follow.setFollowPK(followPK);
+        followRepository.delete(follow);
         return ResultMessage.SUCCESS;
     }
 

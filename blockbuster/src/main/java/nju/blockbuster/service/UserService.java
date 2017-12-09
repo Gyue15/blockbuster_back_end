@@ -10,11 +10,15 @@ public interface UserService {
 
     ResultMessage addUser(UserModel userModel);
 
+    ResultMessage modifyUser(UserModel userModel);
+
     UserModel getUser(String email, String password);
 
     List<UserModel> getFollowedUser(String email);
 
     ResultMessage follow(String followerEmail, String followedEmail);
+
+    ResultMessage unfollow(String followerEmail, String followedEmail);
 
     Boolean isFollow(String followerEmail, String followedEmail);
 }

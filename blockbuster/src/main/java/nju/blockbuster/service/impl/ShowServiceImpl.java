@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ShowServiceImpl implements ShowService{
+public class ShowServiceImpl implements ShowService {
 
     @Autowired
     PhotoRepository photoRepository;
@@ -109,7 +109,7 @@ public class ShowServiceImpl implements ShowService{
     @Override
     public ShowModel[] getHotShows(String email, int pageNum) {
         Pageable pageable = new PageRequest(pageNum, 20, Sort.Direction.DESC, "likeNum");
-        Page<Show> showPage = showRepository.findByLikeNumGreaterThanEqual(0,pageable);
+        Page<Show> showPage = showRepository.findByLikeNumGreaterThanEqual(0, pageable);
         List<Show> showList = showPage.getContent();
 
         return this.toShowModels(email, showList);
@@ -122,14 +122,14 @@ public class ShowServiceImpl implements ShowService{
 
         List<Show> showList = new ArrayList<>();
         // 获得所有的show
-        for (Follow follow: followList) {
+        for (Follow follow : followList) {
             showList.addAll(showRepository.findByEmail(follow.getFollowPK().getFollowedEmail()));
         }
 
         // 按时间排序
         sort(showList);
 
-       return this.toShowModels(email, showList);
+        return this.toShowModels(email, showList);
     }
 
     @Override
@@ -138,7 +138,11 @@ public class ShowServiceImpl implements ShowService{
         likePK.setSid(sid);
         likePK.setEmail(email);
 
-        Like like = new Like();
+        Like like = likeRepository.findLikesByLikePK(likePK);
+        if (like != null && like.getLikePK() != null) {
+            return ResultMessage.FAILURE;
+        }
+        like = new Like();
         like.setLikePK(likePK);
 
         likeRepository.save(like);
@@ -147,12 +151,35 @@ public class ShowServiceImpl implements ShowService{
     }
 
     @Override
+    public ResultMessage deleteLike(Integer sid, String email) {
+        LikePK likePK = new LikePK();
+        likePK.setSid(sid);
+        likePK.setEmail(email);
+
+        Like like = likeRepository.findLikesByLikePK(likePK);
+        if (like == null || like.getLikePK() == null) {
+            return ResultMessage.FAILURE;
+        }
+        like.setLikePK(likePK);
+
+        likeRepository.delete(like);
+
+        return ResultMessage.SUCCESS;
+    }
+
+    @Override
+    public ShowModel getShow(Integer sid, String email) {
+        Show show = showRepository.findShowBySid(sid);
+        return toShowModel(email, show);
+    }
+
+    @Override
     public ShowModel[] searchShows(String tag, String email) {
         List<TagRelation> tagRelationList = tagRelationRepository.findByTagRelationPK_Tag(tag);
 
         List<Show> showList = new ArrayList<>();
         // 获得所有的show
-        for (TagRelation tagRelation: tagRelationList) {
+        for (TagRelation tagRelation : tagRelationList) {
             showList.add(showRepository.findShowBySid(tagRelation.getTagRelationPK().getSid()));
         }
         // 按时间排序
@@ -173,62 +200,66 @@ public class ShowServiceImpl implements ShowService{
         }
     }
 
-    private ShowModel[] toShowModels(String email, List<Show> showList) {
+    private ShowModel toShowModel(String email, Show show) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        ShowModel showModel = new ShowModel();
+        showModel.setLikeNum(show.getLikeNum());
+        showModel.setDate(show.getDate());
+        showModel.setEmail(show.getEmail());
+        showModel.setDescription(show.getDescription());
+        showModel.setSid(show.getSid());
+        showModel.setAid(show.getAid());
+        showModel.setTitle(show.getTitle());
+
+        // tags
+        List<TagRelation> tagList = tagRelationRepository.findByTagRelationPK_Sid(show.getSid());
+        String[] tags = new String[tagList.size()];
+        for (int j = 0; j < tags.length; j++) {
+            tags[j] = tagList.get(j).getTagRelationPK().getTag();
+        }
+        showModel.setTags(tags);
+
+        // is liked
+        LikePK likePk = new LikePK();
+        likePk.setEmail(email);
+        likePk.setSid(show.getSid());
+        Like like = likeRepository.findLikesByLikePK(likePk);
+        if (like != null && like.getLikePK().getSid() != null) {
+            showModel.setLiked(true);
+        } else {
+            showModel.setLiked(false);
+        }
+
+        // pictures
+        List<Photo> photoList = photoRepository.findBySid(show.getSid());
+        String[] pictures = new String[photoList.size()];
+        for (int j = 0; j < pictures.length; j++) {
+            pictures[j] = photoList.get(j).getPic();
+        }
+        showModel.setPictures(pictures);
+
+        // is followed
+        showModel.setFollowed(userService.isFollow(email, show.getEmail()));
+
+        // user
+        User user = userRepository.findUserByEmail(show.getEmail());
+        showModel.setAvatar(user.getAvatar());
+        showModel.setUserName(user.getUsername());
+
+        // date
+        showModel.setFormatDate(df.format(show.getDate()));
+
+        // album name
+        showModel.setAlbumName(albumRepository.findByAid(show.getAid()).getTitle());
+
+        return showModel;
+
+    }
+
+    private ShowModel[] toShowModels(String email, List<Show> showList) {
         ShowModel[] showModels = new ShowModel[showList.size()];
         for (int i = 0; i < showModels.length; i++) {
-            ShowModel showModel = new ShowModel();
-            Show show = showList.get(i);
-            showModel.setLikeNum(show.getLikeNum());
-            showModel.setDate(show.getDate());
-            showModel.setEmail(show.getEmail());
-            showModel.setDescription(show.getDescription());
-            showModel.setSid(show.getSid());
-            showModel.setAid(show.getAid());
-            showModel.setTitle(show.getTitle());
-
-            // tags
-            List<TagRelation> tagList = tagRelationRepository.findByTagRelationPK_Sid(show.getSid());
-            String[] tags = new String[tagList.size()];
-            for (int j = 0; j < tags.length; j++) {
-                tags[j] = tagList.get(j).getTagRelationPK().getTag();
-            }
-            showModel.setTags(tags);
-
-            // is liked
-            LikePK likePk = new LikePK();
-            likePk.setEmail(email);
-            likePk.setSid(show.getSid());
-            Like like = likeRepository.findLikesByLikePK(likePk);
-            if (like != null && like.getLikePK().getSid() != null) {
-                showModel.setLiked(true);
-            } else {
-                showModel.setLiked(false);
-            }
-
-            // pictures
-            List<Photo> photoList = photoRepository.findBySid(show.getSid());
-            String[] pictures = new String[photoList.size()];
-            for (int j = 0; j < pictures.length; j++) {
-                pictures[j] = photoList.get(j).getPic();
-            }
-            showModel.setPictures(pictures);
-
-            // is followed
-            showModel.setFollowed(userService.isFollow(email, show.getEmail()));
-
-            // user
-            User user = userRepository.findUserByEmail(show.getEmail());
-            showModel.setAvatar(user.getAvatar());
-            showModel.setUserName(user.getUsername());
-
-            // date
-            showModel.setFormatDate(df.format(show.getDate()));
-
-            // album name
-            showModel.setAlbumName(albumRepository.findByAid(show.getAid()).getTitle());
-
-            showModels[i] = showModel;
+            showModels[i] = toShowModel(email, showList.get(i));
         }
         return showModels;
     }

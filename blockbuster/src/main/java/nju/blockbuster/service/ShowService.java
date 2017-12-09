@@ -18,6 +18,10 @@ public interface ShowService {
 
     ResultMessage saveLike(Integer sid, String email);
 
+    ResultMessage deleteLike(Integer sid, String email);
+
+    ShowModel getShow(Integer sid, String email);
+
     ShowModel[] searchShows(String tag, String email);
 
 }

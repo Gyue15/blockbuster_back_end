@@ -1,11 +1,14 @@
 package nju.blockbuster.service.impl;
 
 import nju.blockbuster.entities.Album;
+import nju.blockbuster.entities.Photo;
 import nju.blockbuster.models.AlbumModel;
 import nju.blockbuster.repository.AlbumRepository;
+import nju.blockbuster.repository.PhotoRepository;
 import nju.blockbuster.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import util.ResultMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +19,24 @@ public class AlbumServiceImpl implements AlbumService {
     @Autowired
     private AlbumRepository albumRepository;
 
+    @Autowired
+    private PhotoRepository photoRepository;
+
     @Override
     public AlbumModel[] getAlbum(String email) {
         List<Album> albumList = albumRepository.findAlbumsByEmail(email);
         List<AlbumModel> albumModelList = new ArrayList<>();
-        for (Album album: albumList) {
+        for (Album album : albumList) {
             AlbumModel albumModel = new AlbumModel();
             albumModel.setTitle(album.getTitle());
             albumModel.setAid(album.getAid());
             albumModel.setEmail(album.getEmail());
+            List<Photo> photos = photoRepository.findByAid(album.getAid());
+            String[] photoPath = new String[photos.size()];
+            for (int i = 0; i < photos.size(); i++) {
+                photoPath[i] = photos.get(i).getPic();
+            }
+            albumModel.setPhotos(photoPath);
             albumModelList.add(albumModel);
         }
         AlbumModel[] albumModels = new AlbumModel[albumModelList.size()];
@@ -32,6 +44,25 @@ public class AlbumServiceImpl implements AlbumService {
             albumModels[i] = albumModelList.get(i);
         }
         return albumModels;
+    }
+
+    @Override
+    public AlbumModel albumDetail(String aid) {
+        Album album = albumRepository.findByAid(aid);
+        AlbumModel albumModel = new AlbumModel();
+
+        albumModel.setTitle(album.getTitle());
+        albumModel.setAid(album.getAid());
+        albumModel.setEmail(album.getEmail());
+
+        List<Photo> photos = photoRepository.findByAid(album.getAid());
+        String[] photoPath = new String[photos.size()];
+        for (int i = 0; i < photos.size(); i++) {
+            photoPath[i] = photos.get(i).getPic();
+        }
+        albumModel.setPhotos(photoPath);
+
+        return albumModel;
     }
 
     @Override
@@ -50,5 +81,10 @@ public class AlbumServiceImpl implements AlbumService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public ResultMessage deleteAlbum(String aid) {
+        return null;
     }
 }
