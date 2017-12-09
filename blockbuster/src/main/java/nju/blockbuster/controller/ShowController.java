@@ -77,7 +77,8 @@ public class ShowController {
         String albumId = albumTitle + email;
         // 查看是否有album，如果没有就创建
         AlbumModel albumModel = albumService.albumDetail(albumId);
-        if (albumId == null || albumModel.getAid() == null) {
+        if (albumModel == null || albumModel.getAid() == null) {
+            albumModel = new AlbumModel();
             albumModel.setEmail(email);
             albumModel.setTitle(albumTitle);
             albumModel.setAid(albumId);
