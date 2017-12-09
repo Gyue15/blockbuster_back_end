@@ -110,9 +110,7 @@ public class ShowController {
     @PostMapping("/hot")
     @ResponseBody
     public String getHotShow(String email, int pageNum) {
-        System.out.println("getHotShow:" + email);
         String res = JSON.toJSONString(showService.getHotShows(email, pageNum));
-        System.out.println(res);
         return res;
     }
 
@@ -122,15 +120,15 @@ public class ShowController {
         return JSON.toJSONString(showService.getCareShows(email));
     }
 
-    @PostMapping("/like")
+    @PostMapping("/likeShow")
     @ResponseBody
     public String likeShow(String email, Integer sid) {
         return JSON.toJSONString(showService.saveLike(sid, email));
     }
 
-    @PostMapping("/unlike")
+    @PostMapping("/cancelLikeShow")
     @ResponseBody
-    public String unlikeShow(String email, Integer sid) {
+    public String cancelLikeShow(String email, Integer sid) {
         return JSON.toJSONString(showService.deleteLike(sid, email));
     }
 

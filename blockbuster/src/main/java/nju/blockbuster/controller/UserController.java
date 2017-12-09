@@ -45,7 +45,6 @@ public class UserController {
         userModel.setUsername(username);
         ResultMessage res = userService.addUser(userModel);
         albumController.createNewAlbum(email, "默认专辑");
-        System.out.println("signUpResult:" + JSON.toJSONString(res));
         return JSON.toJSONString(res);
     }
 
@@ -129,22 +128,22 @@ public class UserController {
         return JSON.toJSONString(res);
     }
 
-    @PostMapping("/follow")
+    @PostMapping("/followUser")
     @ResponseBody
-    public String follow(String email, String followedEmail) {
+    public String followUser(String email, String followedEmail) {
         return JSON.toJSONString(userService.follow(email, followedEmail));
     }
 
-    @PostMapping("/unfollow")
+    @PostMapping("/cancelFollowUser")
     @ResponseBody
-    public String unfollow(String email, String followedEmail) {
+    public String cancelFollowUser(String email, String followedEmail) {
         return JSON.toJSONString(userService.unfollow(email, followedEmail));
     }
 
-    @PostMapping("/unfollowList")
+    @PostMapping("/cancelFollowUsers")
     @ResponseBody
-    public String unfollowList(String email, String[] followedEmailList) {
-        for (String followedEmail: followedEmailList) {
+    public String cancelFollowUsers(String email, String[] followedEmails) {
+        for (String followedEmail: followedEmails) {
             ResultMessage res = userService.unfollow(email, followedEmail);
             if (res != ResultMessage.SUCCESS) {
                 return JSON.toJSONString(res);
@@ -153,15 +152,15 @@ public class UserController {
         return JSON.toJSONString(ResultMessage.SUCCESS);
     }
 
-    @PostMapping("/getfollowed")
+    @PostMapping("/getFollowedUsers")
     @ResponseBody
-    public String getFollowed(String email) {
+    public String getFollowedUsers(String email) {
         return JSON.toJSONString(userService.getFollowedUser(email));
     }
 
     @PostMapping("/isFollowed")
     @ResponseBody
-    public Boolean isFollow(String followerEmail, String followedEmail) {
+    public Boolean isFollowed(String followerEmail, String followedEmail) {
         return userService.isFollow(followerEmail, followedEmail);
     }
 

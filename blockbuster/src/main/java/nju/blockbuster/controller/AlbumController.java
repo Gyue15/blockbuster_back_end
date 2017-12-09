@@ -20,7 +20,9 @@ public class AlbumController {
     @PostMapping("/get")
     @ResponseBody
     public String getAlbums(String email) {
-        return JSON.toJSONString(albumService.getAlbum(email));
+        String res = JSON.toJSONString(albumService.getAlbum(email));
+        System.out.println(res);
+        return res;
     }
 
     @PostMapping("/detail")
@@ -38,7 +40,6 @@ public class AlbumController {
         albumModel.setTitle(album);
         albumModel.setAid(email + album);
         boolean res = albumService.saveAlbum(albumModel);
-        System.out.println(res);
         return res ? JSON.toJSONString(ResultMessage.SUCCESS) : JSON.toJSONString(ResultMessage.FAILURE);
     }
 

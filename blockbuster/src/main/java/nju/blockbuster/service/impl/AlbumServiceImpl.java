@@ -25,6 +25,8 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public AlbumModel[] getAlbum(String email) {
         List<Album> albumList = albumRepository.findAlbumsByEmail(email);
+        System.out.println("album service: "  +email);
+        System.out.println("albumService: " + albumList.size());
         List<AlbumModel> albumModelList = new ArrayList<>();
         for (Album album : albumList) {
             AlbumModel albumModel = new AlbumModel();
@@ -39,6 +41,7 @@ public class AlbumServiceImpl implements AlbumService {
             albumModel.setPhotos(photoPath);
             albumModelList.add(albumModel);
         }
+        System.out.println("albumService: " + albumModelList.size());
         AlbumModel[] albumModels = new AlbumModel[albumModelList.size()];
         for (int i = 0; i < albumModels.length; i++) {
             albumModels[i] = albumModelList.get(i);
