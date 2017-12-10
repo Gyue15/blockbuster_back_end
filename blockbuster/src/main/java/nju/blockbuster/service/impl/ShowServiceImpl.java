@@ -215,6 +215,10 @@ public class ShowServiceImpl implements ShowService {
     public ShowModel[] getMyShow(String email, String visitorEmail) {
         List<Show> showList = showRepository.findByEmail(email);
 
+        if (email.equals(visitorEmail)) {
+            return toShowModels(email, showList);
+        }
+
         // 存储消息
         User user = userRepository.findUserByEmail(visitorEmail);
         Message message = new Message();
