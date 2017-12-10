@@ -171,6 +171,10 @@ public class ShowServiceImpl implements ShowService {
         show.setLikeNum(show.getLikeNum()+1);
         showRepository.saveAndFlush(show);
 
+        if (email.equals(show.getEmail())) {
+            return ResultMessage.SUCCESS;
+        }
+
         // 存储消息
         User user = userRepository.findUserByEmail(email);
         Message  message = new Message();
