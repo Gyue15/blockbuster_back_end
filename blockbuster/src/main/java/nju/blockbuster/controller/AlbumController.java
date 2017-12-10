@@ -38,7 +38,7 @@ public class AlbumController {
         AlbumModel albumModel = new AlbumModel();
         albumModel.setEmail(email);
         albumModel.setTitle(album);
-        albumModel.setAid(email + album);
+        albumModel.setAid(album + email);
         boolean res = albumService.saveAlbum(albumModel);
         return res ? JSON.toJSONString(ResultMessage.SUCCESS) : JSON.toJSONString(ResultMessage.FAILURE);
     }
