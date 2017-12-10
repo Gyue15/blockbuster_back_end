@@ -274,7 +274,12 @@ public class ShowServiceImpl implements ShowService {
         showModel.setFormatDate(df.format(show.getDate()));
 
         // album name
-        showModel.setAlbumName(albumRepository.findByAid(show.getAid()).getTitle());
+        Album album = albumRepository.findByAid(show.getAid());
+        if(album != null){
+            showModel.setAlbumName(album.getTitle());
+        }else {
+            showModel.setAlbumName("");
+        }
 
         return showModel;
 

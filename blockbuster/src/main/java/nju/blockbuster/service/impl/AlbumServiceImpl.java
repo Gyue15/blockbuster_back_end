@@ -91,6 +91,12 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public ResultMessage deleteAlbum(String aid) {
-        return null;
+        Album album = albumRepository.findByAid(aid);
+        if(album==null){
+            return ResultMessage.FAILURE;
+        }else {
+            albumRepository.delete(album);
+            return ResultMessage.SUCCESS;
+        }
     }
 }
