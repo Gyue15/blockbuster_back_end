@@ -69,6 +69,14 @@ public class UserController {
         return JSON.toJSONString(ResultMessage.SUCCESS);
     }
 
+    @PostMapping("/getUser")
+    @ResponseBody
+    public String getUser(String email) {
+        UserModel userModel = userService.findUser(email);
+        userModel.setPassword(null);
+        return JSON.toJSONString(userModel);
+    }
+
     @PostMapping("/upload")
     @ResponseBody
     public String upload(MultipartFile file) {
