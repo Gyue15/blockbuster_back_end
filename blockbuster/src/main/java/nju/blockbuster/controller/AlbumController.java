@@ -46,6 +46,10 @@ public class AlbumController {
     @PostMapping("/delete")
     @ResponseBody
     public String deleteAlbum(String aid) {
-        return JSON.toJSONString(albumService.deleteAlbum(aid));
+        String res = JSON.toJSONString(albumService.deleteAlbum(aid));
+        System.out.println("delete");
+        System.out.println(aid);
+        System.out.println(res);
+        return res;
     }
 }

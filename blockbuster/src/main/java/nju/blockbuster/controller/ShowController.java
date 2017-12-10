@@ -64,6 +64,7 @@ public class ShowController {
     @PostMapping("/post")
     @ResponseBody
     public String postPhoto(String[] fileNames, String title, String description, String[] tags, String albumTitle, String email) {
+        System.out.println(albumTitle);
         Date date = new Date();
         List<String> fileUrls = new ArrayList<>();
         for (Map.Entry<String, String> entry : filePathMap.entrySet()) {

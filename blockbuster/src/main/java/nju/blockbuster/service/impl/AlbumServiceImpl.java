@@ -53,6 +53,9 @@ public class AlbumServiceImpl implements AlbumService {
     public AlbumModel albumDetail(String aid) {
         Album album = albumRepository.findByAid(aid);
         AlbumModel albumModel = new AlbumModel();
+        if(album == null || album.getAid() == null ){
+            return albumModel;
+        }
 
         albumModel.setTitle(album.getTitle());
         albumModel.setAid(album.getAid());

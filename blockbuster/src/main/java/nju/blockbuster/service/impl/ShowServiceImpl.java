@@ -147,6 +147,9 @@ public class ShowServiceImpl implements ShowService {
         like.setLikePK(likePK);
 
         likeRepository.save(like);
+        Show show = showRepository.findShowBySid(sid);
+        show.setLikeNum(show.getLikeNum()+1);
+        showRepository.saveAndFlush(show);
 
         return ResultMessage.SUCCESS;
     }
@@ -164,7 +167,9 @@ public class ShowServiceImpl implements ShowService {
         like.setLikePK(likePK);
 
         likeRepository.delete(like);
-
+        Show show = showRepository.findShowBySid(sid);
+        show.setLikeNum(show.getLikeNum()-1);
+        showRepository.saveAndFlush(show);
         return ResultMessage.SUCCESS;
     }
 

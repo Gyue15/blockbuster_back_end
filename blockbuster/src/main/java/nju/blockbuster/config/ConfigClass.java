@@ -13,7 +13,7 @@ public class ConfigClass extends WebMvcConfigurerAdapter {
 
     //供客户端使用的url前缀
     public static final String URL = "http://localhost:8080/picture/";
-    public static final String AVATAR_URL = "http://8080/avatar/";
+    public static final String AVATAR_URL = "http://localhost:8080/avatar/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
