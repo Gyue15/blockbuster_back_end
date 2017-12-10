@@ -6,16 +6,34 @@ public class MessageModel {
 
     private Integer mid;
 
+    /**
+     * 消息的拥有者email
+     */
     private String owner;
 
+    /**
+     * true的时候是已读
+     */
     private Boolean flag;
 
+    /**
+     * 消息内容
+     */
     private String text;
 
+    /**
+     * 消息制造者
+     */
     private String email;
 
+    /**
+     * 消息制造者
+     */
     private String username;
 
+    /**
+     * 消息制造者
+     */
     private String avatar;
 
     public Boolean getFlag() {
