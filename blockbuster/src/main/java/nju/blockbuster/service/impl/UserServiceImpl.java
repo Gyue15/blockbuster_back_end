@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import util.ResultMessage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     MessageRepository messageRepository;
+
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public UserModel findUser(String email) {
@@ -162,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MessageModel> getMessageList(String email) {
-        List<Message> messageList = messageRepository.findByOwner(email);
+        List<Message> messageList = messageRepository.findByOwnerOrderByDateDesc(email);
         List<MessageModel> messageModels = new ArrayList<>();
         for (Message message: messageList) {
             MessageModel messageModel = new MessageModel();
@@ -172,6 +176,8 @@ public class UserServiceImpl implements UserService {
             message.setMid(message.getMid());
             messageModel.setText(message.getText());
             messageModel.setUsername(message.getUsername());
+            messageModel.setDate(message.getDate());
+            messageModel.setFormatDate(dateFormat.format(message.getDate()));
             messageModels.add(messageModel);
         }
 
@@ -186,6 +192,11 @@ public class UserServiceImpl implements UserService {
         messageRepository.save(toSave);
 
         return messageModels;
+    }
+
+    @Override
+    public Boolean hasNewMessage(String email) {
+        return !messageRepository.findByOwnerAndFlag(email, false).isEmpty();
     }
 
 }

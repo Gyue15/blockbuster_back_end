@@ -3,6 +3,7 @@ package nju.blockbuster.entities;
 import com.alibaba.fastjson.JSON;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "message")
@@ -23,6 +24,18 @@ public class Message {
     private String username;
 
     private String avatar;
+
+    @Column(name = "`date`")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Boolean getFlag() {
         return flag;

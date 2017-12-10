@@ -24,4 +24,6 @@ public interface UserService {
     Boolean isFollow(String followerEmail, String followedEmail);
 
     List<MessageModel> getMessageList(String email);
+
+    Boolean hasNewMessage(String email);
 }

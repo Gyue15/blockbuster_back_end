@@ -178,5 +178,11 @@ public class UserController {
         return JSON.toJSONString(userService.getMessageList(email));
     }
 
+    @PostMapping("/hasNewMessage")
+    @ResponseBody
+    public boolean hasNewMessage(String email) {
+        return userService.hasNewMessage(email);
+    }
+
 
 }

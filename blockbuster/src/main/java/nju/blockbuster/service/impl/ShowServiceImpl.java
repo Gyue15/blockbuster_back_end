@@ -17,6 +17,7 @@ import util.ResultMessage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -92,6 +93,7 @@ public class ShowServiceImpl implements ShowService {
             message.setFlag(false);
             message.setAvatar(user.getAvatar());
             message.setEmail(user.getEmail());
+            message.setDate(new Date());
             messagesList.add(message);
         }
         messageRepository.save(messagesList);
@@ -178,6 +180,7 @@ public class ShowServiceImpl implements ShowService {
         message.setOwner(email);
         message.setText("点赞了你的大片秀：" + show.getTitle());
         message.setUsername(user.getUsername());
+        message.setDate(new Date());
         messageRepository.save(message);
 
         return ResultMessage.SUCCESS;
@@ -221,6 +224,7 @@ public class ShowServiceImpl implements ShowService {
         message.setOwner(email);
         message.setUsername(user.getUsername());
         message.setText("访问了你的主页");
+        message.setDate(new Date());
         messageRepository.save(message);
 
 

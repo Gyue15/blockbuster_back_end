@@ -2,6 +2,8 @@ package nju.blockbuster.models;
 
 import com.alibaba.fastjson.JSON;
 
+import java.util.Date;
+
 public class MessageModel {
 
     private Integer mid;
@@ -35,6 +37,26 @@ public class MessageModel {
      * 消息制造者
      */
     private String avatar;
+
+    private Date date;
+
+    private String formatDate;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setFormatDate(String formatDate) {
+        this.formatDate = formatDate;
+    }
+
+    public String getFormatDate() {
+        return formatDate;
+    }
 
     public Boolean getFlag() {
         return flag;
