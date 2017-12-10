@@ -131,6 +131,12 @@ public class ShowController {
         return res;
     }
 
+    /**
+     *
+     * @param email show的主人
+     * @param visitorEmail 访问的人
+     * @return show的list
+     */
     @PostMapping("/myShow")
     @ResponseBody
     public String getMyShow(String email, String visitorEmail) {
