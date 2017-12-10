@@ -17,6 +17,7 @@ import util.ResultMessage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -135,6 +136,7 @@ public class UserServiceImpl implements UserService {
         message.setEmail(followerEmail);
         message.setFlag(false);
         message.setAvatar(follower.getAvatar());
+        message.setDate(new Date());
         messageRepository.save(message);
 
         return ResultMessage.SUCCESS;
