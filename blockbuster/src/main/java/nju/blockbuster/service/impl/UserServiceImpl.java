@@ -2,9 +2,12 @@ package nju.blockbuster.service.impl;
 
 import nju.blockbuster.entities.Follow;
 import nju.blockbuster.entities.FollowPK;
+import nju.blockbuster.entities.Message;
 import nju.blockbuster.entities.User;
+import nju.blockbuster.models.MessageModel;
 import nju.blockbuster.models.UserModel;
 import nju.blockbuster.repository.FollowRepository;
+import nju.blockbuster.repository.MessageRepository;
 import nju.blockbuster.repository.UserRepository;
 import nju.blockbuster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     FollowRepository followRepository;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Override
     public UserModel findUser(String email) {
@@ -115,6 +121,18 @@ public class UserServiceImpl implements UserService {
         follow.setFollowPK(followPK);
         followRepository.save(follow);
 
+        // 存储消息
+        User follower = userRepository.findUserByEmail(followerEmail);
+        Message message = new Message();
+        message.setUsername(follower.getUsername());
+        message.setText("关注了你");
+        message.setUsername(follower.getUsername());
+        message.setOwner(followedEmail);
+        message.setEmail(followerEmail);
+        message.setFlag(false);
+        message.setAvatar(follower.getAvatar());
+        messageRepository.save(message);
+
         return ResultMessage.SUCCESS;
     }
 
@@ -140,6 +158,34 @@ public class UserServiceImpl implements UserService {
         Follow follow = followRepository.findByFollowPK(followPK);
 
         return follow != null && follow.getFollowPK() != null && follow.getFollowPK().getFollowedEmail() != null;
+    }
+
+    @Override
+    public List<MessageModel> getMessageList(String email) {
+        List<Message> messageList = messageRepository.findByOwner(email);
+        List<MessageModel> messageModels = new ArrayList<>();
+        for (Message message: messageList) {
+            MessageModel messageModel = new MessageModel();
+            messageModel.setAvatar(message.getAvatar());
+            messageModel.setEmail(message.getEmail());
+            messageModel.setFlag(message.getFlag());
+            message.setMid(message.getMid());
+            messageModel.setText(message.getText());
+            messageModel.setUsername(message.getUsername());
+            messageModels.add(messageModel);
+        }
+
+        // 将所有消息改为已读
+        List<Message> toSave = new ArrayList<>();
+        for (Message message: messageList) {
+            if (!message.getFlag()) {
+                message.setFlag(true);
+                toSave.add(message);
+            }
+        }
+        messageRepository.save(toSave);
+
+        return messageModels;
     }
 
 }

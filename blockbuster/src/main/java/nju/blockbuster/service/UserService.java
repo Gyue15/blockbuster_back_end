@@ -1,5 +1,6 @@
 package nju.blockbuster.service;
 
+import nju.blockbuster.models.MessageModel;
 import nju.blockbuster.models.UserModel;
 import util.ResultMessage;
 
@@ -21,4 +22,6 @@ public interface UserService {
     ResultMessage unfollow(String followerEmail, String followedEmail);
 
     Boolean isFollow(String followerEmail, String followedEmail);
+
+    List<MessageModel> getMessageList(String email);
 }

@@ -133,8 +133,8 @@ public class ShowController {
 
     @PostMapping("/myShow")
     @ResponseBody
-    public String getMyShow(String email) {
-        return JSON.toJSONString(showService.getMyShow(email));
+    public String getMyShow(String email, String visitorEmail) {
+        return JSON.toJSONString(showService.getMyShow(email, visitorEmail));
     }
 
     @PostMapping("/care")

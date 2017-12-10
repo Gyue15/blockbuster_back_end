@@ -45,7 +45,7 @@ public class Album {
     @Override
     public String toString() {
         return "Album [aid = "
-                + aid.toString()
+                + aid
                 + ", title = "
                 + title
                 + ", email = "

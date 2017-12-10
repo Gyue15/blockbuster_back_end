@@ -49,6 +49,9 @@ public class ShowServiceImpl implements ShowService {
     @Autowired
     AlbumRepository albumRepository;
 
+    @Autowired
+    MessageRepository messageRepository;
+
     @Override
     public Integer saveShow(ShowModel showModel) {
         Show show = new Show();
@@ -77,6 +80,21 @@ public class ShowServiceImpl implements ShowService {
             tagRelation.setTagRelationPK(tagRelationPK);
             tagRelationRepository.saveAndFlush(tagRelation);
         }
+
+        List<Follow> followList = followRepository.findByFollowPK_FollowedEmail(show.getEmail());
+        List<Message> messagesList = new ArrayList<>();
+        for (Follow follow: followList) {
+            User user = userRepository.findUserByEmail(follow.getFollowPK().getFollowerEmail());
+            Message message = new Message();
+            message.setText("发布了一个大片秀：" + show.getTitle());
+            message.setUsername(user.getUsername());
+            message.setOwner(show.getEmail());
+            message.setFlag(false);
+            message.setAvatar(user.getAvatar());
+            message.setEmail(user.getEmail());
+            messagesList.add(message);
+        }
+        messageRepository.save(messagesList);
 
         return show.getSid();
     }
@@ -151,6 +169,17 @@ public class ShowServiceImpl implements ShowService {
         show.setLikeNum(show.getLikeNum()+1);
         showRepository.saveAndFlush(show);
 
+        // 存储消息
+        User user = userRepository.findUserByEmail(email);
+        Message  message = new Message();
+        message.setFlag(false);
+        message.setAvatar(user.getAvatar());
+        message.setEmail(user.getEmail());
+        message.setOwner(email);
+        message.setText("点赞了你的大片秀：" + show.getTitle());
+        message.setUsername(user.getUsername());
+        messageRepository.save(message);
+
         return ResultMessage.SUCCESS;
     }
 
@@ -180,8 +209,21 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public ShowModel[] getMyShow(String email) {
+    public ShowModel[] getMyShow(String email, String visitorEmail) {
         List<Show> showList = showRepository.findByEmail(email);
+
+        // 存储消息
+        User user = userRepository.findUserByEmail(visitorEmail);
+        Message message = new Message();
+        message.setAvatar(user.getAvatar());
+        message.setFlag(false);
+        message.setEmail(user.getEmail());
+        message.setOwner(email);
+        message.setUsername(user.getUsername());
+        message.setText("访问了你的主页");
+        messageRepository.save(message);
+
+
         return toShowModels(email, showList);
     }
 

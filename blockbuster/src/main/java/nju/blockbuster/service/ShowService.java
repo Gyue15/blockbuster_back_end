@@ -24,7 +24,7 @@ public interface ShowService {
 
     ShowModel getShow(Integer sid, String email);
 
-    ShowModel[] getMyShow(String email);
+    ShowModel[] getMyShow(String email, String visitorEmail);
 
     ShowModel[] searchShows(String key, String email);
 

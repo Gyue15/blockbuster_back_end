@@ -10,5 +10,9 @@ import java.util.List;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, FollowPK> {
     List<Follow> findByFollowPK_FollowerEmail(String followerEmail);
+
     Follow findByFollowPK(FollowPK followPK);
+
+    List<Follow> findByFollowPK_FollowedEmail(String followedEmail);
+
 }

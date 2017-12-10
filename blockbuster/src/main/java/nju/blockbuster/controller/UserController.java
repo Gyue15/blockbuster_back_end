@@ -164,5 +164,11 @@ public class UserController {
         return userService.isFollow(followerEmail, followedEmail);
     }
 
+    @PostMapping("/message")
+    @ResponseBody
+    public String getMessage(String email) {
+        return JSON.toJSONString(userService.getMessageList(email));
+    }
+
 
 }
