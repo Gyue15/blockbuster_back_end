@@ -82,17 +82,19 @@ public class ShowServiceImpl implements ShowService {
             tagRelationRepository.saveAndFlush(tagRelation);
         }
 
+        User showOwner = userRepository.findUserByEmail(show.getEmail());
+
         List<Follow> followList = followRepository.findByFollowPK_FollowedEmail(show.getEmail());
         List<Message> messagesList = new ArrayList<>();
         for (Follow follow: followList) {
             User user = userRepository.findUserByEmail(follow.getFollowPK().getFollowerEmail());
             Message message = new Message();
             message.setText("发布了一个大片秀：" + show.getTitle());
-            message.setUsername(user.getUsername());
-            message.setOwner(show.getEmail());
+            message.setUsername(showOwner.getUsername());
+            message.setOwner(user.getEmail());
             message.setFlag(false);
-            message.setAvatar(user.getAvatar());
-            message.setEmail(user.getEmail());
+            message.setAvatar(showOwner.getAvatar());
+            message.setEmail(showOwner.getEmail());
             message.setDate(new Date());
             messagesList.add(message);
         }
@@ -129,7 +131,7 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public ShowModel[] getHotShows(String email, int pageNum) {
-        Pageable pageable = new PageRequest(pageNum, 20, Sort.Direction.DESC, "likeNum");
+        Pageable pageable = new PageRequest(pageNum, 40, Sort.Direction.DESC, "likeNum");
         Page<Show> showPage = showRepository.findByLikeNumGreaterThanEqual(0, pageable);
         List<Show> showList = showPage.getContent();
 
