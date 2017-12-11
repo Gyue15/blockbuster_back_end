@@ -181,7 +181,7 @@ public class ShowServiceImpl implements ShowService {
         message.setFlag(false);
         message.setAvatar(user.getAvatar());
         message.setEmail(user.getEmail());
-        message.setOwner(email);
+        message.setOwner(show.getEmail());
         message.setText("点赞了你的大片秀：" + show.getTitle());
         message.setUsername(user.getUsername());
         message.setDate(new Date());
